@@ -7,8 +7,8 @@ using System.Web;
 
 namespace ExploreEntity.DAL
 {
-    public class ZoolandiaContext : DbContext
+    public class BlogContext : DbContext
     {
-        public DbSet<Animal> Animals { get; set; }
+        
     }
 }
