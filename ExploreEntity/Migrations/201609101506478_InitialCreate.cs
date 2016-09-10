@@ -7,23 +7,12 @@ namespace ExploreEntity.Migrations
     {
         public override void Up()
         {
-            /*
-                PrimaryKey(t => t.CitationStyleId) 
-                Really means....
-
-                int GetCitationId(CitationStyle t) {
-                    return t.CitationStyleId;
-                }
-
-                PrimaryKey(GetCitationId(new CitationStyle()));
-
-             */
             CreateTable(
                 "dbo.CitationStyles",
                 c => new
                     {
                         CitationStyleId = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.CitationStyleId);
             
@@ -45,8 +34,8 @@ namespace ExploreEntity.Migrations
                 c => new
                     {
                         AuthorId = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(),
-                        LastName = c.String(),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
                         PublishedWork_PublishedWorkId = c.Int(),
                     })
                 .PrimaryKey(t => t.AuthorId)
