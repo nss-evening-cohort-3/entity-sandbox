@@ -6,14 +6,14 @@ namespace ExploreEntity.Migrations
     using System.Linq;
     using Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ExploreEntity.DAL.ZoolandiaContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ExploreEntity.DAL.BlogContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(ExploreEntity.DAL.ZoolandiaContext context)
+        protected override void Seed(ExploreEntity.DAL.BlogContext context)
         {
             //  This method will be called after migrating to the latest version.
 
