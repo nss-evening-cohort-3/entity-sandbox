@@ -28,11 +28,6 @@ namespace ExploreEntity.Migrations
             //    );
             //
 
-            context.Animals.AddOrUpdate(
-                a => a.Name,
-                new Animal { Name = "Zebra", Habitat = "Sahara" },
-                new Animal { Name = "Lion", Habitat = "USA"}
-            );
         }
     }
 }
