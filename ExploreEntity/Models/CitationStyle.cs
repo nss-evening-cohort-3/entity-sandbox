@@ -10,6 +10,8 @@ namespace ExploreEntity.Models
     {
         [Key]
         public int CitationStyleId { get; set; }
+
+        [Required]
         public string Name { get; set; }
     }
 }
