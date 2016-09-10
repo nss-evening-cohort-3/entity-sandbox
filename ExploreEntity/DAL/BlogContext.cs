@@ -9,7 +9,9 @@ namespace ExploreEntity.DAL
 {
     public class BlogContext : DbContext
     {
-        public DbSet<PublishedWork> Works { get; set; }
-        public DbSet<CitationStyle> CitationStyles { get; set; } // To make seeding easy
+        // 'virtual' keyword is needed to use Moq during testing
+        public virtual DbSet<PublishedWork> Works { get; set; }
+        public virtual DbSet<CitationStyle> CitationStyles { get; set; } // To make seeding easy
+        public virtual DbSet<Author> Authors { get; set; }
     }
 }
