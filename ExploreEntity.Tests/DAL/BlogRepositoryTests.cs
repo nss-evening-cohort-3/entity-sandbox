@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ExploreEntity.DAL;
 using System.Collections.Generic;
 using ExploreEntity.Models;
+using Moq;
+using System.Data.Entity;
 
 namespace ExploreEntity.Tests.DAL
 {
