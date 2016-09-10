@@ -8,6 +8,18 @@ namespace ExploreEntity.DAL
 {
     public class BlogRepository
     {
+        public BlogContext Context { get; set; }
+
+        public BlogRepository()
+        {
+            Context = new BlogContext();
+        }
+
+        public BlogRepository(BlogContext _context)
+        {
+            Context = _context;
+        }
+
         public List<Author> GetAuthors()
         {
             throw new NotImplementedException();

@@ -19,10 +19,30 @@ namespace ExploreEntity.Tests.DAL
         }
 
         [TestMethod]
+        public void RepoEnsureRepoHasContext()
+        {
+            BlogRepository repo = new BlogRepository();
+
+            BlogContext actual_context = repo.Context;
+
+            Assert.IsInstanceOfType(actual_context, typeof(BlogContext));
+        }
+
+        [TestMethod]
         public void RepoEnsureWeHaveNoAuthors()
         {
             // Arrange
-            BlogRepository repo = new BlogRepository();
+            // How to create a new Author, just sayin'...
+            // Author my_author = new Author();
+
+            // Create Mock BlogContext
+            Mock<BlogContext> mock_context = new Mock<BlogContext>();
+            Mock<DbSet<Author>> mock_author_table = new Mock<DbSet<Author>>();
+            List<Author> author_list = new List<Author>();
+
+
+
+            BlogRepository repo = new BlogRepository(mock_context.Object);
 
             // Act
             List<Author> actual_authors = repo.GetAuthors();
