@@ -12,6 +12,19 @@ namespace ExploreEntity.Tests.DAL
     [TestClass]
     public class BlogRepositoryTests
     {
+        Mock<BlogContext> mock_context { get; set; }
+        Mock<DbSet<Author>> mock_author_table { get; set; }
+        List<Author> author_list { get; set; } // Fake
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            // Create Mock BlogContext
+            mock_context = new Mock<BlogContext>();
+            mock_author_table = new Mock<DbSet<Author>>();
+            author_list = new List<Author>(); // Fake
+        }
+
         [TestMethod]
         public void RepoEnsureCanCreateInstance()
         {
@@ -33,13 +46,7 @@ namespace ExploreEntity.Tests.DAL
         public void RepoEnsureWeHaveNoAuthors()
         {
             // Arrange
-            // How to create a new Author, just sayin'...
-            // Author my_author = new Author();
 
-            // Create Mock BlogContext
-            Mock<BlogContext> mock_context = new Mock<BlogContext>();
-            Mock<DbSet<Author>> mock_author_table = new Mock<DbSet<Author>>();
-            List<Author> author_list = new List<Author>(); // Fake
             var queryable_list = author_list.AsQueryable();
 
             // Lie to LINQ make it think that our new Queryable List is a Database table.
@@ -48,7 +55,7 @@ namespace ExploreEntity.Tests.DAL
             mock_author_table.As<IQueryable<Author>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
             mock_author_table.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator());
 
-            // Have our Author property return our Queryable List
+            // Have our Author property return our Queryable List AKA Fake database table.
             mock_context.Setup(c => c.Authors).Returns(mock_author_table.Object);
 
 
