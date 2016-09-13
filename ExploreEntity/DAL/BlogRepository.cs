@@ -22,7 +22,7 @@ namespace ExploreEntity.DAL
 
         public List<Author> GetAuthors()
         {
-            throw new NotImplementedException();
+            return Context.Authors.ToList();
         }
     }
 }
