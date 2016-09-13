@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using ExploreEntity.Models;
 using Moq;
 using System.Data.Entity;
+using System.Linq;
 
 namespace ExploreEntity.Tests.DAL
 {
@@ -38,8 +39,17 @@ namespace ExploreEntity.Tests.DAL
             // Create Mock BlogContext
             Mock<BlogContext> mock_context = new Mock<BlogContext>();
             Mock<DbSet<Author>> mock_author_table = new Mock<DbSet<Author>>();
-            List<Author> author_list = new List<Author>();
+            List<Author> author_list = new List<Author>(); // Fake
+            var queryable_list = author_list.AsQueryable();
 
+            // Lie to LINQ make it think that our new Queryable List is a Database table.
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.Provider).Returns(queryable_list.Provider);
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.Expression).Returns(queryable_list.Expression);
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator());
+
+            // Have our Author property return our Queryable List
+            mock_context.Setup(c => c.Authors).Returns(mock_author_table.Object);
 
 
             BlogRepository repo = new BlogRepository(mock_context.Object);
