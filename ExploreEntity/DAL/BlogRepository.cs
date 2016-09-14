@@ -24,5 +24,10 @@ namespace ExploreEntity.DAL
         {
             return Context.Authors.ToList();
         }
+
+        public void AddAuthor(Author author)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
