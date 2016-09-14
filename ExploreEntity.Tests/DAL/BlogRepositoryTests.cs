@@ -16,6 +16,20 @@ namespace ExploreEntity.Tests.DAL
         Mock<DbSet<Author>> mock_author_table { get; set; }
         List<Author> author_list { get; set; } // Fake
 
+        public void ConnectMocksToDatastore()
+        {
+            var queryable_list = author_list.AsQueryable();
+
+            // Lie to LINQ make it think that our new Queryable List is a Database table.
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.Provider).Returns(queryable_list.Provider);
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.Expression).Returns(queryable_list.Expression);
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator());
+
+            // Have our Author property return our Queryable List AKA Fake database table.
+            mock_context.Setup(c => c.Authors).Returns(mock_author_table.Object);
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -46,19 +60,7 @@ namespace ExploreEntity.Tests.DAL
         public void RepoEnsureWeHaveNoAuthors()
         {
             // Arrange
-
-            var queryable_list = author_list.AsQueryable();
-
-            // Lie to LINQ make it think that our new Queryable List is a Database table.
-            mock_author_table.As<IQueryable<Author>>().Setup(m => m.Provider).Returns(queryable_list.Provider);
-            mock_author_table.As<IQueryable<Author>>().Setup(m => m.Expression).Returns(queryable_list.Expression);
-            mock_author_table.As<IQueryable<Author>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
-            mock_author_table.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator());
-
-            // Have our Author property return our Queryable List AKA Fake database table.
-            mock_context.Setup(c => c.Authors).Returns(mock_author_table.Object);
-
-
+            ConnectMocksToDatastore();
             BlogRepository repo = new BlogRepository(mock_context.Object);
 
             // Act
