@@ -22,12 +22,14 @@ namespace ExploreEntity.DAL
 
         public List<Author> GetAuthors()
         {
+            int i = 1;
             return Context.Authors.ToList();
         }
 
         public void AddAuthor(Author author)
         {
-            throw new NotImplementedException();
+            Context.Authors.Add(author);
+            Context.SaveChanges();
         }
     }
 }
