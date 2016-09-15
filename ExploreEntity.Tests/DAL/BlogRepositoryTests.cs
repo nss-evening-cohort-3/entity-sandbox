@@ -122,5 +122,56 @@ namespace ExploreEntity.Tests.DAL
 
             Assert.AreEqual(expected_author_penname, actual_author_penname);
         }
+
+        [TestMethod]
+        public void RepoEnsureFindAuthorByPenName()
+        {
+            // Arrange
+            author_list.Add(new Author { AuthorId = 1, FirstName = "Sally", LastName = "Mae", PenName = "Voldemort" });
+            author_list.Add(new Author { AuthorId = 2, FirstName = "Tim", LastName = "James", PenName = "tim" });
+            author_list.Add(new Author { AuthorId = 3, FirstName = "Golden State", LastName = "Warroris", PenName = "gsw" });
+
+            BlogRepository repo = new BlogRepository(mock_context.Object);
+            ConnectMocksToDatastore();
+
+            // Act
+            string pen_name = "voldemort";
+            Author actual_author = repo.FindAuthorByPenName(pen_name);
+
+            // Assert
+            int expected_author_id = 1;
+            int actual_author_id = actual_author.AuthorId;
+            Assert.AreEqual(expected_author_id, actual_author_id);
+        }
+
+        [TestMethod]
+        public void RepoEnsureICanRemoveAuthor()
+        {
+            // Arrange
+            // Arrange
+            author_list.Add(new Author { AuthorId = 1, FirstName = "Sally", LastName = "Mae", PenName = "Voldemort" });
+            author_list.Add(new Author { AuthorId = 2, FirstName = "Tim", LastName = "James", PenName = "tim" });
+            author_list.Add(new Author { AuthorId = 3, FirstName = "Golden State", LastName = "Warroris", PenName = "gsw" });
+
+            BlogRepository repo = new BlogRepository(mock_context.Object);
+            ConnectMocksToDatastore();
+
+            // Act
+            string pen_name = "tim";
+            Author removed_author = repo.RemoveAuthor(pen_name);
+            int expected_author_count = 2;
+            int actual_author_count = repo.GetAuthors().Count;
+            int expected_author_id = 2;
+            int actual_author_id = removed_author.AuthorId;
+            // Assert
+            Assert.AreEqual(expected_author_count, actual_author_count);
+            Assert.AreEqual(expected_author_id, actual_author_id);
+        }
+
+        [TestMethod]
+        public void RepoEnsureICanNotRemoveThingsNotThere()
+        {
+
+        }
     }
 }
