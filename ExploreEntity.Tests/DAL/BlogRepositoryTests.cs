@@ -24,10 +24,13 @@ namespace ExploreEntity.Tests.DAL
             mock_author_table.As<IQueryable<Author>>().Setup(m => m.Provider).Returns(queryable_list.Provider);
             mock_author_table.As<IQueryable<Author>>().Setup(m => m.Expression).Returns(queryable_list.Expression);
             mock_author_table.As<IQueryable<Author>>().Setup(m => m.ElementType).Returns(queryable_list.ElementType);
-            mock_author_table.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(queryable_list.GetEnumerator());
+            mock_author_table.As<IQueryable<Author>>().Setup(m => m.GetEnumerator()).Returns(() => queryable_list.GetEnumerator());
 
             // Have our Author property return our Queryable List AKA Fake database table.
             mock_context.Setup(c => c.Authors).Returns(mock_author_table.Object);
+
+            
+            mock_author_table.Setup(t => t.Add(It.IsAny<Author>())).Callback((Author a) => author_list.Add(a));
         }
 
         [TestInitialize]
@@ -76,8 +79,9 @@ namespace ExploreEntity.Tests.DAL
         public void RepoEnsureAddAuthorToDatabase()
         {
             // Arrange
-            ConnectMocksToDatastore();
+            
             BlogRepository repo = new BlogRepository(mock_context.Object);
+            ConnectMocksToDatastore();
             Author my_author = new Author { FirstName = "Sally", LastName = "Mae", PenName = "Voldemort"}; // Property Initializer
             /* Same as
              Author my_author = new Author();
@@ -87,8 +91,11 @@ namespace ExploreEntity.Tests.DAL
              */
             // Act
             repo.AddAuthor(my_author);
+
+
             // repo.AddAuthor("Sally", "Mae", "Voldemort")
             int actual_author_count = repo.GetAuthors().Count;
+            //List<Author> list_of_authors = repo.GetAuthors();
             /* Same as
             List<Author> list_of_authors = repo.GetAuthors();
             int actual_author_count = list_of_authors.Count;
