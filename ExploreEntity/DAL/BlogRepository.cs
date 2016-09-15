@@ -31,5 +31,12 @@ namespace ExploreEntity.DAL
             Context.Authors.Add(author);
             Context.SaveChanges();
         }
+
+        public void AddAuthor(string first_name, string last_name, string penname)
+        {
+            Author author = new Author { FirstName = first_name, LastName = last_name, PenName = penname };
+            Context.Authors.Add(author);
+            Context.SaveChanges();
+        }
     }
 }
