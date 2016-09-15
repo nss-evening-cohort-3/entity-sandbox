@@ -164,7 +164,7 @@ namespace ExploreEntity.Tests.DAL
             int expected_author_id = 2;
             int actual_author_id = removed_author.AuthorId;
             // Assert
-            Assert.AreEqual(expected_author_count, actual_author_count);
+            Assert.AreEqual(expected_author_count, actual_author_count);    
             Assert.AreEqual(expected_author_id, actual_author_id);
         }
 
