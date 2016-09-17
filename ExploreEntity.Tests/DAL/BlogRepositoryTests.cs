@@ -15,6 +15,7 @@ namespace ExploreEntity.Tests.DAL
         Mock<BlogContext> mock_context { get; set; }
         Mock<DbSet<Author>> mock_author_table { get; set; }
         List<Author> author_list { get; set; } // Fake
+        BlogRepository repo { get; set; }
 
         public void ConnectMocksToDatastore()
         {
@@ -40,6 +41,15 @@ namespace ExploreEntity.Tests.DAL
             mock_context = new Mock<BlogContext>();
             mock_author_table = new Mock<DbSet<Author>>();
             author_list = new List<Author>(); // Fake
+            repo = new BlogRepository(mock_context.Object);
+
+            ConnectMocksToDatastore();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            repo = null; // 
         }
 
         [TestMethod]
@@ -63,8 +73,7 @@ namespace ExploreEntity.Tests.DAL
         public void RepoEnsureWeHaveNoAuthors()
         {
             // Arrange
-            ConnectMocksToDatastore();
-            BlogRepository repo = new BlogRepository(mock_context.Object);
+            
 
             // Act
             List<Author> actual_authors = repo.GetAuthors();
@@ -80,8 +89,6 @@ namespace ExploreEntity.Tests.DAL
         {
             // Arrange
             
-            BlogRepository repo = new BlogRepository(mock_context.Object);
-            ConnectMocksToDatastore();
             Author my_author = new Author { FirstName = "Sally", LastName = "Mae", PenName = "Voldemort"}; // Property Initializer
             /* Same as
              Author my_author = new Author();
@@ -110,8 +117,6 @@ namespace ExploreEntity.Tests.DAL
         public void RepoEnsureAddAuthorWithArgs()
         {
             // Arrange
-            BlogRepository repo = new BlogRepository(mock_context.Object);
-            ConnectMocksToDatastore();
             // Act
             repo.AddAuthor("Sally", "Mae", "Voldemort");
 
@@ -130,9 +135,6 @@ namespace ExploreEntity.Tests.DAL
             author_list.Add(new Author { AuthorId = 1, FirstName = "Sally", LastName = "Mae", PenName = "Voldemort" });
             author_list.Add(new Author { AuthorId = 2, FirstName = "Tim", LastName = "James", PenName = "tim" });
             author_list.Add(new Author { AuthorId = 3, FirstName = "Golden State", LastName = "Warroris", PenName = "gsw" });
-
-            BlogRepository repo = new BlogRepository(mock_context.Object);
-            ConnectMocksToDatastore();
 
             // Act
             string pen_name = "voldemort";
@@ -153,9 +155,6 @@ namespace ExploreEntity.Tests.DAL
             author_list.Add(new Author { AuthorId = 2, FirstName = "Tim", LastName = "James", PenName = "tim" });
             author_list.Add(new Author { AuthorId = 3, FirstName = "Golden State", LastName = "Warroris", PenName = "gsw" });
 
-            BlogRepository repo = new BlogRepository(mock_context.Object);
-            ConnectMocksToDatastore();
-
             // Act
             string pen_name = "tim";
             Author removed_author = repo.RemoveAuthor(pen_name);
@@ -175,9 +174,6 @@ namespace ExploreEntity.Tests.DAL
             author_list.Add(new Author { AuthorId = 1, FirstName = "Sally", LastName = "Mae", PenName = "Voldemort" });
             author_list.Add(new Author { AuthorId = 2, FirstName = "Tim", LastName = "James", PenName = "tim" });
             author_list.Add(new Author { AuthorId = 3, FirstName = "Golden State", LastName = "Warroris", PenName = "gsw" });
-
-            BlogRepository repo = new BlogRepository(mock_context.Object);
-            ConnectMocksToDatastore();
 
             // Act
             string pen_name = "harry";
