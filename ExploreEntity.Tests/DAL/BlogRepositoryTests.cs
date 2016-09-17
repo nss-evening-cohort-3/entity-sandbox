@@ -28,9 +28,9 @@ namespace ExploreEntity.Tests.DAL
 
             // Have our Author property return our Queryable List AKA Fake database table.
             mock_context.Setup(c => c.Authors).Returns(mock_author_table.Object);
-
-            
+         
             mock_author_table.Setup(t => t.Add(It.IsAny<Author>())).Callback((Author a) => author_list.Add(a));
+            mock_author_table.Setup(t => t.Remove(It.IsAny<Author>())).Callback((Author a) => author_list.Remove(a));
         }
 
         [TestInitialize]
@@ -171,7 +171,20 @@ namespace ExploreEntity.Tests.DAL
         [TestMethod]
         public void RepoEnsureICanNotRemoveThingsNotThere()
         {
+            // Arrange
+            author_list.Add(new Author { AuthorId = 1, FirstName = "Sally", LastName = "Mae", PenName = "Voldemort" });
+            author_list.Add(new Author { AuthorId = 2, FirstName = "Tim", LastName = "James", PenName = "tim" });
+            author_list.Add(new Author { AuthorId = 3, FirstName = "Golden State", LastName = "Warroris", PenName = "gsw" });
 
+            BlogRepository repo = new BlogRepository(mock_context.Object);
+            ConnectMocksToDatastore();
+
+            // Act
+            string pen_name = "harry";
+            Author removed_author = repo.RemoveAuthor(pen_name);
+
+            // Assert
+            Assert.IsNull(removed_author);
         }
     }
 }
