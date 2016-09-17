@@ -59,7 +59,13 @@ namespace ExploreEntity.DAL
 
         public Author RemoveAuthor(string pen_name)
         {
-            throw new NotImplementedException();
+            Author found_author = FindAuthorByPenName(pen_name);
+            if (found_author != null)
+            {
+                Context.Authors.Remove(found_author);
+                Context.SaveChanges();
+            }
+            return found_author;
         }
     }
 }
