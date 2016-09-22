@@ -41,20 +41,12 @@ namespace ExploreEntity.DAL
 
         public Author FindAuthorByPenName(string pen_name)
         {
-            // Very Inefficient! b/c
-            // SELECT * from Authors; Gets ALL the authors.
 
             // Much faster to to use LINQ to generate something like:
             // SELECT * from Authors WHERE PenName == pen_name; // Gets only the one we want
-            List<Author> found_authors = Context.Authors.ToList(); 
-            foreach (var author in found_authors)
-            {
-                if (author.PenName.ToLower() == pen_name.ToLower())
-                {
-                    return author;
-                }
-            }
-            return null;
+
+            Author found_author = Context.Authors.FirstOrDefault(a => a.PenName.ToLower() == pen_name.ToLower());
+            return found_author;
         }
 
         public Author RemoveAuthor(string pen_name)
