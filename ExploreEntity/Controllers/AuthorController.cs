@@ -15,6 +15,17 @@ namespace ExploreEntity.Controllers
         public ActionResult Index()
         {
             List<Author> list_of_authors = repo.GetAuthors();
+
+            // Using ViewBag
+            //ViewBag.Authors = list_of_authors;
+
+            return View(list_of_authors);
+        }
+
+        public ActionResult WithViewBag()
+        {
+            List<Author> list_of_authors = repo.GetAuthors();
+            ViewBag.Authors = list_of_authors;
             return View();
         }
 

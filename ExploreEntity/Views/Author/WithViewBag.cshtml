@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "WithViewBag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    @if (ViewBag.Authors.Count == 0)
+    {
+        <h2>No Authors Found!</h2>
+    } else {
+        <h2>Here are the Authors</h2>
+        <h3>@ViewBag.Authors.Count</h3>
+
+        <ul>
+            @foreach (var author in ViewBag.Authors)
+            {
+                <li>@author.PenName</li>
+            }
+
+        </ul>
+    }
+
